@@ -3,6 +3,15 @@ import { useNavigate } from 'react-router-dom'
 
 import { signUp, login } from 'services/auth'
 
+// TODO:
+// - 이메일과 비밀번호의 유효성 검사
+//  - 이메일: 최소 @, . 포함
+//  - 비밀번호: 8자 이상 입력
+//  - 조건 불만족시 버튼 비활성화
+// - 응답으로 받은 토큰 로컬 스토리지 저장
+// - 다음 번에 로그인 시 토큰이 존재한다면 루트 경로로 리다이렉트
+// - 토큰이 유효하지 않다면 사용자에게 알리고 로그인 페이지로 리다이렉트
+
 const Auth = () => {
   const naviagte = useNavigate()
   const [isLoginMode, setIsLoginMode] = useState(true)
