@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 
+import { authTokenState } from 'store/atoms'
 import { signUp, login } from 'services/auth'
 
 // TODO:
@@ -8,16 +10,21 @@ import { signUp, login } from 'services/auth'
 //  - 이메일: 최소 @, . 포함
 //  - 비밀번호: 8자 이상 입력
 //  - 조건 불만족시 버튼 비활성화
-// - 응답으로 받은 토큰 로컬 스토리지 저장
-// - 다음 번에 로그인 시 토큰이 존재한다면 루트 경로로 리다이렉트
 // - 토큰이 유효하지 않다면 사용자에게 알리고 로그인 페이지로 리다이렉트
 
 const Auth = () => {
   const naviagte = useNavigate()
+  const [authToken, setAuthToken] = useRecoilState(authTokenState)
   const [isLoginMode, setIsLoginMode] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+
+  useEffect(() => {
+    if (authToken.length > 0) {
+      naviagte('/')
+    }
+  }, [authToken, naviagte])
 
   const handleLoginModeToggle = () => {
     setIsLoginMode((prev) => !prev)
@@ -47,7 +54,8 @@ const Auth = () => {
     }
 
     login(email, password)
-      .then(() => {
+      .then(({ token }) => {
+        setAuthToken(token)
         setErrorMessage('')
         naviagte('/')
       })

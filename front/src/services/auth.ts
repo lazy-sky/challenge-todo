@@ -12,7 +12,8 @@ interface IAuthError {
 
 export const signUp = async (email: string, password: string) => {
   try {
-    await axios.post(`${baseUrl}/users/create`, { email, password })
+    const { data } = await axios.post(`${baseUrl}/users/create`, { email, password })
+    return data
   } catch (error) {
     throw new Error((error as IAuthError).response.data.details)
   }
@@ -20,7 +21,8 @@ export const signUp = async (email: string, password: string) => {
 
 export const login = async (email: string, password: string) => {
   try {
-    await axios.post(`${baseUrl}/users/login`, { email, password })
+    const { data } = await axios.post(`${baseUrl}/users/login`, { email, password })
+    return data
   } catch (error) {
     throw new Error((error as IAuthError).response.data.details)
   }
