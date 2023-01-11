@@ -9,7 +9,7 @@ const Auth = () => {
   const [errorMessage, setErrorMessage] = useState('')
 
   const handleLoginModeToggle = () => {
-    setIsLoginMode(false)
+    setIsLoginMode((prev) => !prev)
   }
 
   const handleEmailChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -51,16 +51,18 @@ const Auth = () => {
 
   return (
     <div>
+      <h2>{isLoginMode ? '로그인' : '회원가입'}</h2>
+
       <form onSubmit={handleFormSubmit}>
         <input type='text' placeholder='email' value={email} onChange={handleEmailChange} />
         <input type='password' placeholder='password' value={password} onChange={handlePasswordChange} />
         {SubmitButton}
       </form>
-      {isLoginMode && (
-        <button type='button' onClick={handleLoginModeToggle}>
-          아직 회원가입을 하지 않으셨나요?
-        </button>
-      )}
+
+      <button type='button' onClick={handleLoginModeToggle}>
+        {isLoginMode ? '아직 회원가입을 하지 않으셨나요?' : '이미 회원이신가요?'}
+      </button>
+
       {errorMessage.length > 0 && <p>{errorMessage}</p>}
     </div>
   )
