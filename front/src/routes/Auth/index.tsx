@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { signUp, login } from 'services/auth'
 
 const Auth = () => {
+  const naviagte = useNavigate()
   const [isLoginMode, setIsLoginMode] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -38,7 +40,7 @@ const Auth = () => {
     login(email, password)
       .then(() => {
         setErrorMessage('')
-        // TODO: 홈페이지로 라우팅
+        naviagte('/')
       })
       .catch((error) => {
         setErrorMessage(error.message)
