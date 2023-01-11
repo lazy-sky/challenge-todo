@@ -2,10 +2,26 @@ import axios from 'axios'
 
 const baseUrl = 'http://localhost:8080'
 
-export const signUp = (email: string, password: string) => {
-  axios.post(`${baseUrl}/users/create`, { email, password })
+interface IAuthError {
+  response: {
+    data: {
+      details: string
+    }
+  }
 }
 
-export const login = (email: string, password: string) => {
-  axios.post(`${baseUrl}/users/login`, { email, password })
+export const signUp = async (email: string, password: string) => {
+  try {
+    await axios.post(`${baseUrl}/users/create`, { email, password })
+  } catch (error) {
+    throw new Error((error as IAuthError).response.data.details)
+  }
+}
+
+export const login = async (email: string, password: string) => {
+  try {
+    await axios.post(`${baseUrl}/users/login`, { email, password })
+  } catch (error) {
+    throw new Error((error as IAuthError).response.data.details)
+  }
 }
